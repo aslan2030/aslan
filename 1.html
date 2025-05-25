@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الوعي بالتصيد الاحتيالي لموظفي ادارة تعليم نجران  - نسخة موسعة</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .scenario-card {
+            border-right: 4px solid #3182ce;
+            transition: all 0.3s ease;
+        }
+        .scenario-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .message-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            position: relative;
+        }
+        .banking-message {
+            background-color: #ebf8ff;
+        }
+        .whatsapp-message {
+            background-color: #e6fffa;
+        }
+        .prize-message {
+            background-color: #fefcbf;
+        }
+        .email-message {
+            background-color: #f0fff4;
+        }
+        .app-notification {
+            background-color: #fff5f5;
+        }
+        .management-message {
+            background-color: #edf2f7;
+        }
+        .update-notification {
+            background-color: #faf5ff;
+        }
+        .file-sharing {
+            background-color: #f7fafc;
+        }
+        .option-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option-card:hover {
+            transform: translateY(-2px);
+        }
+        .option-selected {
+            border-color: #3182ce;
+            background-color: #ebf8ff;
+        }
+        .quiz-progress-bar {
+            transition: width 0.5s ease;
+        }
+        .result-message {
+            display: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h1 class="text-3xl font-bold text-center text-blue-800 mb-4">اختبار الوعي بالتصيد الاحتيالي</h1>
+            <div class="border-b-2 border-blue-200 pb-4 mb-4">
+                <p class="text-gray-700 text-lg leading-relaxed">
+                    مرحبًا بك في اختبار الوعي بالتصيد الاحتيالي المخصص للموظفين. يهدف هذا الاختبار إلى قياس مدى قدرتك على التعرف على محاولات التصيد الإلكتروني والرسائل المشبوهة.
+                </p>
+                <p class="text-gray-700 text-lg leading-relaxed mt-2">
+                    يتكون الاختبار من 10 سيناريوهات مختلفة. لكل سيناريو، عليك تحديد ما إذا كانت الرسالة آمنة أم مشبوهة وتحتاج إلى الحذر. بعد إكمال الاختبار، ستحصل على درجتك النهائية وتوصيات لتحسين مهاراتك في مجال الأمن السيبراني.
+                </p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="bg-yellow-100 p-3 rounded-lg border-r-4 border-yellow-500 w-full md:w-auto mb-4 md:mb-0">
+                    <p class="text-yellow-800"><i class="fas fa-lightbulb mr-2"></i>نصيحة: انتبه للتفاصيل الصغيرة مثل عناوين البريد الإلكتروني، والروابط، والأخطاء اللغوية.</p>
+                </div>
+                <button id="startBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 w-full md:w-auto">
+                    <i class="fas fa-play mr-2"></i>بدء الاختبار
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progressSection" class="bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+            <h2 class="text-xl font-semibold text-gray-700 mb-2">تقدم الاختبار</h2>
+            <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
+                <div id="progressBar" class="quiz-progress-bar bg-blue-600 h-4 rounded-full" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between">
+                <span id="currentQuestion" class="text-sm font-medium text-gray-600">السؤال 0 من 10</span>
+                <span id="timeRemaining" class="text-sm font-medium text-gray-600">الوقت المتبقي: <span id="timer">10:00</span></span>
+            </div>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quizContainer" class="hidden">
+            <!-- Scenario 1: Banking Message -->
+            <div id="scenario1" class="scenario-card bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السيناريو 1: رسالة نصية من البنك</h2>
+                <div class="message-box banking-message p-5 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 rounded-full p-2 mr-3">
+                            <i class="fas fa-university text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">بنك الاهلي  السعودي </h3>
+                            <div class="text-gray-700 mt-1">
+                                <p>عزيزي العميل،</p>
+                                <p class="mt-2">نود إبلاغك بأنه تم إيقاف حسابك المصرفي مؤقتًا بسبب عدم تحديث بياناتك. يرجى النقر على الرابط أدناه لتحديث معلوماتك خلال 24 ساعة لتجنب إغلاق الحساب نهائيًا.</p>
+                                <p class="mt-2">https://www.alahli.com//login</p>
+                                <p class="mt-2">شكرًا لتعاونكم،</p>
+                                <p>إدارة بنك الاهلي </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-700 mb-4">كيف يجب أن تتعامل مع هذه الرسالة؟</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="0" onclick="selectOption(this, 1)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">أقوم بالنقر على الرابط وتحديث بياناتي فورًا</span>
+                        </div>
+                    </div>
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="1" onclick="selectOption(this, 1)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">أتجاهل الرسالة وأتواصل مع البنك مباشرة للتحقق</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 2: WhatsApp Message -->
+            <div id="scenario2" class="scenario-card bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السيناريو 2: رسالة من واتساب</h2>
+                <div class="message-box whatsapp-message p-5 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-green-100 rounded-full p-2 mr-3">
+                            <i class="fab fa-whatsapp text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">فريق دعم واتساب</h3>
+                            <div class="text-gray-700 mt-1">
+                                <p>مرحبًا،</p>
+                                <p class="mt-2">تم تعطيل حسابك على واتساب بشكل مؤقت. لإعادة تنشيط حسابك، يرجى إدخال رمز التحقق الذي سنرسله إليك عن طريق النقر على الرابط التالي:</p>
+                                <p class="mt-2">http://whatsapp-verify-code.web.app</p>
+                                <p class="mt-2">يرجى التحقق في أسرع وقت ممكن لتجنب حذف حسابك نهائيًا.</p>
+                                <p class="mt-2">فريق دعم واتساب</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-700 mb-4">ما هو الإجراء المناسب الذي يجب اتخاذه؟</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="1" onclick="selectOption(this, 2)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">تجاهل الرسالة وحظر المرسل</span>
+                        </div>
+                    </div>
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="0" onclick="selectOption(this, 2)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">النقر على الرابط وإدخال رمز التحقق</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 3: Prize Winning Message -->
+            <div id="scenario3" class="scenario-card bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السيناريو 3: رسالة الفوز بجائزة</h2>
+                <div class="message-box prize-message p-5 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-yellow-100 rounded-full p-2 mr-3">
+                            <i class="fas fa-gift text-yellow-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">مسابقة جوائز السعودية/h3>
+                            <div class="text-gray-700 mt-1">
+                                <p>تهانينا!</p>
+                                <p class="mt-2">لقد فزت بجائزة قدرها 100,000 ريال في مسابقة جوائز السعودية! تم اختيار رقم هاتفك عشوائيًا من بين ملايين المشاركين.</p>
+                                <p class="mt-2">لاستلام جائزتك، يرجى إرسال المعلومات التالية:</p>
+                                <p>- الاسم الكامل</p>
+                                <p>- رقم الهوية</p>
+                                <p>- رقم الحساب البنكي</p>
+                                <p class="mt-2">إلى: claim@bigwinprize.net</p>
+                                <p class="mt-2">تهانينا مرة أخرى!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-700 mb-4">ما هو رد فعلك تجاه هذه الرسالة؟</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="0" onclick="selectOption(this, 3)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">إرسال المعلومات المطلوبة للحصول على الجائزة</span>
+                        </div>
+                    </div>
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="1" onclick="selectOption(this, 3)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">حذف الرسالة وتجاهلها تمامًا</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 4: Email Message -->
+            <div id="scenario4" class="scenario-card bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السيناريو 4: بريد إلكتروني من قسم تقنية المعلومات</h2>
+                <div class="message-box email-message p-5 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-green-100 rounded-full p-2 mr-3">
+                            <i class="fas fa-envelope text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">قسم تقنية  المعلومات - تحديث عاجل</h3>
+                            <p class="text-sm text-gray-500">من: it-support@moe.gov.sa.com</p>
+                            <div class="text-gray-700 mt-1">
+                                <p>عزيزي الموظف،</p>
+                                <p class="mt-2">تم اكتشاف محاولات وصول غير مصرح بها إلى حسابك. وفقًا لسياسة أمن المعلومات الجديدة، يجب على جميع الموظفين تحديث كلمات المرور الخاصة بهم فورًا.</p>
+                                <p class="mt-2">الرجاء النقر على الرابط أدناه لتحديث كلمة المرور الخاصة بك في غضون 24 ساعة:</p>
+                                <p class="mt-2"><a href="#" class="text-blue-600">https://password-update-moe.gov.sa.com/login</a></p>
+                                <p class="mt-2">تفضلوا بقبول فائق الاحترام،</p>
+                                <p>فريق الامن السبيراني  </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-700 mb-4">ما هو التصرف الصحيح في هذه الحالة؟</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="1" onclick="selectOption(this, 4)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">التواصل مع قسم تقنية المعلومات مباشرة للتحقق من صحة الرسالة</span>
+                        </div>
+                    </div>
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="0" onclick="selectOption(this, 4)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">النقر على الرابط وتغيير كلمة المرور فورًا كما هو مطلوب</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 5: App Notification -->
+            <div id="scenario5" class="scenario-card bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السيناريو 5: إشعار تطبيق</h2>
+                <div class="message-box app-notification p-5 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-red-100 rounded-full p-2 mr-3">
+                            <i class="fas fa-mobile-alt text-red-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">تنبيه أمان Google Play</h3>
+                            <div class="text-gray-700 mt-1">
+                                <p>تحذير أمني مهم!</p>
+                                <p class="mt-2">تم اكتشاف فيروس ضار على جهازك. يمكن أن يسرق بياناتك الشخصية وكلمات المرور.</p>
+                                <p class="mt-2">انقر هنا للمسح الفوري وإزالة التهديد:</p>
+                                <p class="text-blue-600 mt-2">https://virus-remove-tool.mobi/scan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-700 mb-4">ما هو الإجراء الأنسب؟</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="0" onclick="selectOption(this, 5)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">النقر على الرابط وتشغيل الماسح الأمني</span>
+                        </div>
+                    </div>
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="1" onclick="selectOption(this, 5)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">تجاهل الإشعار واستخدام برنامج مكافحة الفيروسات الرسمي</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 6: Management Message -->
+            <div id="scenario6" class="scenario-card bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السيناريو 6: رسالة من المدير العام</h2>
+                <div class="message-box management-message p-5 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 rounded-full p-2 mr-3">
+                            <i class="fas fa-user-tie text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">رسالة عاجلة من المدير العام</h3>
+                            <p class="text-sm text-gray-500">من: ceo@company-corporations.co</p>
+                            <div class="text-gray-700 mt-1">
+                                <p>عزيزي الموظف،</p>
+                                <p class="mt-2">أحتاج إلى مساعدتك العاجلة في إتمام معاملة مالية سرية. هذه مسألة حساسة وعاجلة جدًا لا تحتمل التأخير.</p>
+                                <p class="mt-2">يرجى شراء بطاقات هدايا بقيمة 5000 ريال وإرسال أرقام البطاقات على عنوان بريدي الإلكتروني الخاص على الفور:</p>
+                                <p class="mt-2">najran-en@moe.gov.sa.com</p>
+                                <p class="mt-2">سيتم تعويضك لاحقًا. هذه مسألة سرية، فالرجاء عدم مناقشتها مع أي شخص آخر.</p>
+                                <p class="mt-2">شكرا لتفهمكم وسرعة استجابتكم،</p>
+                                <p>الدكتور / حسن عسيري</p>
+                                <p>المدير العام</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-700 mb-4">ما هي الاستجابة المناسبة لهذه الرسالة؟</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="1" onclick="selectOption(this, 6)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">التحقق من صحة الرسالة مع الإدارة عبر القنوات الرسمية</span>
+                        </div>
+                    </div>
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="0" onclick="selectOption(this, 6)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">شراء بطاقات الهدايا وإرسال الأرقام كما هو مطلوب لدعم المدير</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 7: Update Notification -->
+            <div id="scenario7" class="scenario-card bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السيناريو 7: إشعار تحديث برنامج</h2>
+                <div class="message-box update-notification p-5 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-purple-100 rounded-full p-2 mr-3">
+                            <i class="fas fa-desktop text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">تحديث Microsoft Office عاجل</h3>
+                            <div class="text-gray-700 mt-1">
+                                <p>عزيزي المستخدم،</p>
+                                <p class="mt-2">يرجى العلم بأنه يجب عليك تحديث Microsoft Office على الفور بسبب ثغرة أمنية خطيرة تم اكتشافها.</p>
+                                <p class="mt-2">انقر هنا لتنزيل التحديث الأمني العاجل:</p>
+                                <p class="mt-2"><a href="#" class="text-blue-600">http://msoffice-update3487.net/security-patch.exe</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-700 mb-4">ما هو التصرف السليم في هذه الحالة؟</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="1" onclick="selectOption(this, 7)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">الانتقال إلى موقع Microsoft الرسمي للتحقق من وجود تحديثات</span>
+                        </div>
+                    </div>
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="0" onclick="selectOption(this, 7)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">النقر على الرابط وتثبيت التحديث فورًا</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 8: File Sharing Message -->
+            <div id="scenario8" class="scenario-card bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السيناريو 8: مشاركة ملف عبر البريد الإلكتروني</h2>
+                <div class="message-box file-sharing p-5 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-gray-100 rounded-full p-2 mr-3">
+                            <i class="fas fa-file-alt text-gray-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">فاتورة جديدة - يرجى المراجعة</h3>
+                            <p class="text-sm text-gray-500">من: invoices@supplier-billing.info</p>
+                            <div class="text-gray-700 mt-1">
+                                <p>السادة المحترمين،</p>
+                                <p class="mt-2">مرفق لكم الفاتورة الشهرية الخاصة بخدماتنا. يرجى مراجعتها والرد في أقرب وقت ممكن.</p>
+                                <p class="mt-2">لعرض الفاتورة، يرجى النقر على الرابط التالي:</p>
+                                <p class="text-blue-600 mt-2">https://docusupplier.info/view?id=invoice8976.doc</p>
+                                <p class="mt-2">يرجى سداد المبلغ المستحق خلال 7 أيام.</p>
+                                <p class="mt-2">مع خالص تحياتي،</p>
+                                <p>قسم المحاسبة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-700 mb-4">ما هو الإجراء المناسب بخصوص هذه الرسالة؟</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="0" onclick="selectOption(this, 8)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">النقر على الرابط ومراجعة الفاتورة للسداد في الموعد المحدد</span>
+                        </div>
+                    </div>
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="1" onclick="selectOption(this, 8)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">التواصل مباشرة مع المورد عبر قنوات الاتصال المعتادة للتحقق</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 9: Social Media Message -->
+            <div id="scenario9" class="scenario-card bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السيناريو 9: رسالة على وسائل التواصل الاجتماعي</h2>
+                <div class="message-box email-message p-5 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 rounded-full p-2 mr-3">
+                            <i class="fab fa-facebook text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">طلب صداقة من زميل</h3>
+                            <div class="text-gray-700 mt-1">
+                                <p>مرحبًا!</p>
+                                <p class="mt-2">أنا محمد، زميلك الجديد في قسم المالية . أرسلت لك طلب صداقة على فيسبوك لكن يبدو أنك لم تلاحظه.</p>
+                                <p class="mt-2">يمكنك مشاهدة صورنا من الحفل الأخير للادارة من خلال هذا الرابط:</p>
+                                <p class="text-blue-600 mt-2">https://fb-viewphotos.site/company-photos</p>
+                                <p class="mt-2">أتطلع للتواصل معك قريبًا!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-700 mb-4">كيف تتصرف مع هذه الرسالة؟</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="1" onclick="selectOption(this, 9)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">التحقق من وجود هذا الزميل في الشركة قبل الرد أو النقر على أي روابط</span>
+                        </div>
+                    </div>
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="0" onclick="selectOption(this, 9)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">النقر على الرابط لمشاهدة الصور والتواصل مع الزميل الجديد</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario 10: Account Recovery -->
+            <div id="scenario10" class="scenario-card bg-white rounded-lg shadow-lg p-6 mb-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">السيناريو 10: استعادة الحساب</h2>
+                <div class="message-box email-message p-5 mb-6">
+                    <div class="flex items-start">
+                        <div class="bg-green-100 rounded-full p-2 mr-3">
+                            <i class="fas fa-lock text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">إعادة تعيين كلمة المرور - حساب Microsoft 365</h3>
+                            <p class="text-sm text-gray-500">من: account-security@micrrosoft-verify.com</p>
+                            <div class="text-gray-700 mt-1">
+                                <p>مستخدم Microsoft العزيز،</p>
+                                <p class="mt-2">تلقينا طلبًا لإعادة تعيين كلمة المرور لحساب Microsoft 365 الخاص بك. إذا قمت بطلب ذلك، فالرجاء النقر على الرابط أدناه لإكمال عملية إعادة تعيين كلمة المرور:</p>
+                                <p class="text-blue-600 mt-2">https://account-micrrosoft.com/reset-password?id=284756</p>
+                                <p class="mt-2">ملاحظة: سينتهي هذا الرابط خلال 30 دقيقة من وقت إرسال هذه الرسالة.</p>
+                                <p class="mt-2">إذا لم تطلب إعادة تعيين كلمة المرور، فيرجى تجاهل هذه الرسالة.</p>
+                                <p class="mt-2">شكرًا،</p>
+                                <p>فريق دعم Microsoft</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-700 mb-4">ما هي الاستجابة المناسبة لهذه الرسالة؟</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="0" onclick="selectOption(this, 10)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">النقر على الرابط لإعادة تعيين كلمة المرور إذا كنت قد طلبت ذلك</span>
+                        </div>
+                    </div>
+                    <div class="option-card border rounded-lg p-4 hover:border-blue-500" data-value="1" onclick="selectOption(this, 10)">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                                <div class="option-indicator w-3 h-3 rounded-full bg-blue-600 hidden"></div>
+                            </div>
+                            <span class="text-gray-800 font-medium">الذهاب إلى موقع Microsoft الرسمي وتسجيل الدخول مباشرة للتحقق</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div id="navigationButtons" class="flex justify-between mt-6 mb-8 hidden">
+                <button id="prevBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-300 w-full md:w-auto">
+                    <i class="fas fa-chevron-left ml-1"></i>السابق
+                </button>
+                <button id="nextBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-300 w-full md:w-auto">
+                    التالي<i class="fas fa-chevron-right mr-1"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="bg-white rounded-lg shadow-lg p-6 hidden fade-in">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4 text-center">نتائج الاختبار</h2>
+            
+            <div class="flex justify-center mb-8">
+                <div class="w-64 h-64 relative">
+                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                        <circle class="text-gray-200" stroke-width="10" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
+                        <circle id="score-circle" class="text-blue-600" stroke-width="10" stroke="currentColor" stroke-linecap="round" fill="transparent" r="40" cx="50" cy="50" stroke-dasharray="0 251.2" stroke-dashoffset="0" />
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span id="scoreDisplay" class="text-4xl font-bold text-blue-800">0/10</span>
+                        <span class="text-gray-600 text-lg">النتيجة</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="scoreMessage" class="text-center mb-6">
+                <div id="excellentScore" class="result-message bg-green-100 p-4 rounded-lg border-r-4 border-green-500 mb-4">
+                    <h3 class="font-bold text-green-800 text-xl mb-2"><i class="fas fa-medal mr-2"></i>ممتاز! أنت خبير في الأمن السيبراني</h3>
+                    <p class="text-green-700">لديك وعي ممتاز بالتهديدات الأمنية وقدرة على اكتشاف محاولات التصيد الاحتيالي. استمر في الحفاظ على هذا المستوى من اليقظة!</p>
+                </div>
+
+                <div id="goodScore" class="result-message bg-blue-100 p-4 rounded-lg border-r-4 border-blue-500 mb-4">
+                    <h3 class="font-bold text-blue-800 text-xl mb-2"><i class="fas fa-thumbs-up mr-2"></i>جيد جداً! لديك مستوى وعي عالٍ</h3>
+                    <p class="text-blue-700">أنت على دراية جيدة بمعظم أساليب التصيد الاحتيالي، لكن لا يزال هناك مجال للتحسين في بعض المجالات.</p>
+                </div>
+
+                <div id="averageScore" class="result-message bg-yellow-100 p-4 rounded-lg border-r-4 border-yellow-500 mb-4">
+                    <h3 class="font-bold text-yellow-800 text-xl mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>مقبول، لكن يحتاج إلى تحسين</h3>
+                    <p class="text-yellow-700">لديك بعض المعرفة الأساسية حول التصيد الاحتيالي، لكنك معرض لخطر الوقوع في بعض الهجمات. ينصح بمزيد من التدريب.</p>
+                </div>
+
+                <div id="poorScore" class="result-message bg-red-100 p-4 rounded-lg border-r-4 border-red-500 mb-4">
+                    <h3 class="font-bold text-red-800 text-xl mb-2"><i class="fas fa-exclamation-circle mr-2"></i>يحتاج إلى تحسين كبير</h3>
+                    <p class="text-red-700">أنت معرض بشكل كبير للوقوع ضحية لهجمات التصيد الاحتيالي. نوصي بشدة بالمشاركة في دورات تدريبية متخصصة في الوعي الأمني.</p>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                <h3 class="font-bold text-gray-800 text-xl mb-3">ملخص الإجابات:</h3>
+                <div id="answersSummary" class="space-y-3">
+                    <!-- Answers summary will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg mb-6">
+                <h3 class="font-bold text-blue-800 text-xl mb-3">نصائح لتحسين الوعي الأمني:</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li>انتبه دائمًا للأخطاء اللغوية والإملائية في الرسائل</li>
+                    <li>تحقق من عناوين البريد الإلكتروني والروابط بدقة قبل النقر عليها</li>
+                    <li>كن حذرًا من الرسائل التي تحثك على اتخاذ إجراء فوري أو عاجل</li>
+                    <li>لا تشارك معلوماتك الشخصية أو المالية استجابة لرسائل البريد الإلكتروني أو الرسائل النصية</li>
+                    <li>عند الشك، تحقق دائمًا من خلال القنوات الرسمية (اتصل بالمؤسسة مباشرة)</li>
+                    <li>استخدم مضاد فيروسات موثوق وحافظ على تحديثه</li>
+                    <li>تأكد من أن نظام التشغيل والبرامج محدثة بأحدث إصدارات الأمان</li>
+                    <li>راجع بانتظام أفضل الممارسات في الأمن السيبراني</li>
+                </ul>
+            </div>
+
+            <div class="text-center mt-8">
+                <button id="retakeBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300">
+                    <i class="fas fa-redo-alt mr-2"></i>إعادة الاختبار
+                </button>
+                <button id="printResultsBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 mr-4">
+                    <i class="fas fa-print mr-2"></i>طباعة النتائج
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Variables
+        let currentScenario = 0;
+        let userAnswers = Array(10).fill(null);
+        let countdownInterval;
+        
+        // Set correct answers (value of 1 means the correct option is the one with data-value="1")
+        const correctAnswers = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        
+        // Scenario explanations
+        const explanations = [
+            "هذه رسالة تصيد احتيالي. البنوك الحقيقية لن تطلب منك تحديث معلوماتك عبر روابط في رسائل نصية. لاحظ أيضًا اسم الموقع المشبوه (bank-futuur-update.com).",
+            "هذه محاولة تصيد احتيالي. واتساب لا يرسل رسائل من هذا النوع للتحقق من الحسابات، ويجب الحذر من الروابط التي تطلب منك إدخال معلومات تسجيل الدخول.",
+            "هذه رسالة احتيالية نموذجية. المسابقات الشرعية لا تطلب معلومات حساسة مثل رقم الهوية أو الحساب البنكي عبر البريد الإلكتروني.",
+            "هذه رسالة تصيد احتيالي. لاحظ الخطأ الإملائي في اسم النطاق (companny بدلا من company). قسم تكنولوجيا المعلومات الحقيقي لن يطلب منك تحديث كلمة المرور عبر رابط غير آمن.",
+            "هذا إشعار احتيالي. Google Play لا يرسل إشعارات من هذا النوع، والرابط المشبوه (virus-remove-tool.mobi) ليس موقعًا رسميًا لـ Google.",
+            "هذه رسالة احتيالية تُعرف باسم 'احتيال المدير التنفيذي'. المدراء الحقيقيون لن يطلبوا شراء بطاقات هدايا عبر البريد الإلكتروني، خاصة باستخدام بريد شخصي.",
+            "هذه رسالة تصيد احتيالي. لاحظ اسم النطاق المشبوه (msoffice-update3487.net) والامتداد (.exe) الذي قد يحتوي على برمجيات ضارة. يجب تنزيل تحديثات البرامج من المواقع الرسمية فقط.",
+            "هذه رسالة احتيالية. لاحظ اسم النطاق المشبوه (docusupplier.info) وعنوان البريد الإلكتروني غير المرتبط بشركة حقيقية (supplier-billing.info).",
+            "هذه رسالة مشبوهة. قد لا يكون 'محمد' موظفًا حقيقيًا، والرابط (fb-viewphotos.site) ليس موقعًا تابعًا لـ Facebook.",
+            "هذه رسالة تصيد احتيالي. لاحظ الخطأ الإملائي في كلمة 'Microsoft' (micrrosoft) في عنوان البريد والرابط. Microsoft الحقيقية لن ترسل روابط إعادة تعيين كلمة المرور من نطاق مشبوه."
+        ];
+
+        // Start the test
+        document.getElementById('startBtn').addEventListener('click', function() {
+            document.getElementById('progressSection').classList.remove('hidden');
+            document.getElementById('quizContainer').classList.remove('hidden');
+            document.getElementById('navigationButtons').classList.remove('hidden');
+            showScenario(1);
+            startTimer(10 * 60); // 10 minutes timer
+            this.parentElement.parentElement.classList.add('hidden');
+        });
+
+        // Show a specific scenario
+        function showScenario(num) {
+            // Hide all scenarios
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById(`scenario${i}`).classList.add('hidden');
+            }
+            
+            // Show the requested scenario
+            document.getElementById(`scenario${num}`).classList.remove('hidden');
+            currentScenario = num;
+            
+            // Update progress
+            document.getElementById('progressBar').style.width = `${(num-1) * 10}%`;
+            document.getElementById('currentQuestion').textContent = `السؤال ${num} من 10`;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = (num === 1);
+            document.getElementById('prevBtn').classList.toggle('opacity-50', num === 1);
+            document.getElementById('nextBtn').textContent = (num === 10) ? 'إنهاء الاختبار' : 'التالي';
+        }
+
+        // Select an option
+        function selectOption(element, scenarioNum) {
+            // Clear previous selections for this scenario
+            const options = document.querySelectorAll(`#scenario${scenarioNum} .option-card`);
+            options.forEach(option => {
+                option.classList.remove('option-selected');
+                option.querySelector('.option-indicator').classList.add('hidden');
+            });
+            
+            // Mark selected option
+            element.classList.add('option-selected');
+            element.querySelector('.option-indicator').classList.remove('hidden');
+            
+            // Store user's answer
+            userAnswers[scenarioNum - 1] = parseInt(element.getAttribute('data-value'));
+
+            // If this is the last question and user answered, enable the finish button
+            if (scenarioNum === 10) {
+                document.getElementById('nextBtn').classList.remove('opacity-50');
+                document.getElementById('nextBtn').disabled = false;
+            }
+        }
+
+        // Navigation event listeners
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            if (currentScenario > 1) {
+                showScenario(currentScenario - 1);
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            if (currentScenario < 10) {
+                showScenario(currentScenario + 1);
+            } else {
+                finishTest();
+            }
+        });
+
+        // Start timer function
+        function startTimer(seconds) {
+            let remainingTime = seconds;
+            const timerEl = document.getElementById('timer');
+            
+            countdownInterval = setInterval(function() {
+                remainingTime--;
+                
+                const minutes = Math.floor(remainingTime / 60);
+                const secs = remainingTime % 60;
+                
+                timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                
+                if (remainingTime <= 0) {
+                    clearInterval(countdownInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        // Finish the test and show results
+        function finishTest() {
+            // Stop the timer
+            clearInterval(countdownInterval);
+            
+            // Calculate score
+            let score = 0;
+            for (let i = 0; i < 10; i++) {
+                if (userAnswers[i] === correctAnswers[i]) {
+                    score++;
+                }
+            }
+            
+            // Hide quiz and show results
+            document.getElementById('quizContainer').classList.add('hidden');
+            document.getElementById('progressSection').classList.add('hidden');
+            document.getElementById('navigationButtons').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            
+            // Update score display
+            document.getElementById('scoreDisplay').textContent = `${score}/10`;
+            
+            // Animate score circle
+            const scorePercentage = score * 10;
+            const scoreCircle = document.getElementById('score-circle');
+            const circumference = 2 * Math.PI * 40;
+            const dashoffset = ((100 - scorePercentage) / 100) * circumference;
+            
+            setTimeout(() => {
+                scoreCircle.style.strokeDasharray = `${circumference - dashoffset} ${dashoffset}`;
+            }, 100);
+            
+            // Show appropriate score message
+            const messages = document.querySelectorAll('.result-message');
+            messages.forEach(msg => msg.style.display = 'none');
+            
+            if (score >= 9) {
+                document.getElementById('excellentScore').style.display = 'block';
+            } else if (score >= 7) {
+                document.getElementById('goodScore').style.display = 'block';
+            } else if (score >= 5) {
+                document.getElementById('averageScore').style.display = 'block';
+            } else {
+                document.getElementById('poorScore').style.display = 'block';
+            }
+            
+            // Generate answers summary
+            const summaryContainer = document.getElementById('answersSummary');
+            summaryContainer.innerHTML = '';
+            
+            for (let i = 0; i < 10; i++) {
+                const isCorrect = userAnswers[i] === correctAnswers[i];
+                const answerDiv = document.createElement('div');
+                answerDiv.className = `flex items-start ${isCorrect ? 'text-green-800' : 'text-red-800'}`;
+                
+                answerDiv.innerHTML = `
+                    <div class="mt-1 ml-2">
+                        <i class="fas ${isCorrect ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500'}"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium">السيناريو ${i + 1}: ${isCorrect ? 'إجابة صحيحة' : 'إجابة خاطئة'}</p>
+                        <p class="text-gray-700 text-sm mt-1">${explanations[i]}</p>
+                    </div>
+                `;
+                
+                summaryContainer.appendChild(answerDiv);
+            }
+        }
+
+        // Retake the test
+        document.getElementById('retakeBtn').addEventListener('click', function() {
+            // Reset variables
+            currentScenario = 0;
+            userAnswers = Array(10).fill(null);
+            
+            // Clear all selections
+            const options = document.querySelectorAll('.option-card');
+            options.forEach(option => {
+                option.classList.remove('option-selected');
+                option.querySelector('.option-indicator').classList.add('hidden');
+            });
+            
+            // Hide results and show intro
+            document.getElementById('results').classList.add('hidden');
+            document.getElementsByClassName('bg-white rounded-lg shadow-lg p-6 mb-8')[0].classList.remove('hidden');
+        });
+
+        // Print results
+        document.getElementById('printResultsBtn').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>
